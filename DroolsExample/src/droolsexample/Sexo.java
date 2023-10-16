@@ -8,7 +8,7 @@ package droolsexample;
  *
  * @author Usuario
  */
-public enum Sexo {
+public enum Sexo   {
       
         MASCULINO, FEMENINO
   
