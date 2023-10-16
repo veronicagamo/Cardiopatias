@@ -1,0 +1,119 @@
+/*
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * 
+ */
+
+
+
+import droolsexample.*
+
+rule "Evaluar Cardiopatía Isquémica Por Dolor Torácico"
+  salience 200
+when
+    pac: Paciente($id:id);
+   sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_TORÁCICO);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+100);
+  
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Problemas Respiratorios"
+ salience 175 
+when
+    pac: Paciente($id:id);
+   sin: Sintoma (idPaciente == $id, tipo ==TipoSintoma.DIFICULTAD_RESPIRAR);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Dolor Irradiado A Otras Zonas"
+ salience 150
+when
+    pac: Paciente($id:id);
+   sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_PECHO || tipo == TipoSintoma.DOLOR_CUELLO || tipo == TipoSintoma.DOLOR_BRAZO_IZQUIERDO
+                                    || tipo == TipoSintoma.DOLOR_MANDIBULA);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Vómitos/Náuseas/Mareos/Sudoración"
+ salience 125
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.NÁUSEAS || tipo == TipoSintoma.VÓMITOS || tipo == TipoSintoma.MAREOS
+                                    || tipo == TipoSintoma.SUDORACIÓN);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+25);
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Edad Y Sexo"
+ salience 100
+when
+    pac: Paciente($id:id, sexo == Sexo.MASCULINO, edad >= 50);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+75);
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Edad Y Sexo II"
+ salience 100
+when
+    pac: Paciente($id:id, sexo == Sexo.FEMENINO, edad >= 60);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+75);
+end
+
+rule "Evaluar Cardiopatía Isquémica Por Factores De Riesgo"
+ salience 90
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.HIPERTENSION || factorRiesgo== EnumFRiesgo.TABAQUISMO || 
+                              factorRiesgo== EnumFRiesgo.DIABETES || factorRiesgo== EnumFRiesgo.COLESTEROL_ELEVADO ||
+                              factorRiesgo== EnumFRiesgo.OBESIDAD || factorRiesgo== EnumFRiesgo.HISTORIAL_FAMILIAR)
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+25);
+end
+
+rule "SÍ Cardiopatía Isquémica Con MUY BAJA Credibilidad"
+ salience 80
+when
+    pac: Paciente($id:id);
+   $diagnostico: Diagnostico(idPac == $id, score== 200);
+   // Tiene que tener problemas respiratorios (+50), dolor torácico (+100) y dolor irradiado a otras zonas (+50)
+then
+   $diagnostico.setCardiopatia(true);
+   $diagnostico.setCredibilidad(EnumCredibilidad.MUY_BAJA);
+end
+
+rule "SÍ Cardiopatía Isquémica Con BAJA Credibilidad"
+ salience 80
+when
+    pac: Paciente($id:id);
+   $diagnostico: Diagnostico(idPac == $id, score> 200 && score<=300);
+   // Tiene que tener problemas respiratorios (+50), dolor torácico (+100), dolor irradiado a otras zonas (+50) y 
+   // tiene alguno o todos estos síntomas: Vómitos/Náuseas/Mareos/Sudoración (+25 cada síntoma)
+then
+   $diagnostico.setCardiopatia(true);
+   $diagnostico.setCredibilidad(EnumCredibilidad.BAJA);
+end
+
+
