@@ -9,5 +9,5 @@ package droolsexample;
  * @author Usuario
  */
 public enum EnumCredibilidad {
-    MUY_ALTA, ALTA, MEDIA, BAJA, MUY_BAJA
+     ALTA, MEDIA, BAJA
 }

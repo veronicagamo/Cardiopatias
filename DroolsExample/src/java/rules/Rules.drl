@@ -20,51 +20,19 @@
 
 import droolsexample.*
 
-rule "Evaluar Cardiopatía Isquémica Por Dolor Torácico"
-  salience 200
-when
-    pac: Paciente($id:id);
-   sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_TORÁCICO);
-   $diagnostico: Diagnostico(idPac == $id, $score:score);
-then
-   $diagnostico.setScore($score+100);
-  
-end
-
-rule "Evaluar Cardiopatía Isquémica Por Problemas Respiratorios"
- salience 175 
-when
-    pac: Paciente($id:id);
-   sin: Sintoma (idPaciente == $id, tipo ==TipoSintoma.DIFICULTAD_RESPIRAR);
-   $diagnostico: Diagnostico(idPac == $id, $score:score);
-then
-   $diagnostico.setScore($score+50);
-end
-
-rule "Evaluar Cardiopatía Isquémica Por Dolor Irradiado A Otras Zonas"
- salience 150
-when
-    pac: Paciente($id:id);
-   sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_PECHO || tipo == TipoSintoma.DOLOR_CUELLO || tipo == TipoSintoma.DOLOR_BRAZO_IZQUIERDO
-                                    || tipo == TipoSintoma.DOLOR_MANDIBULA);
-   $diagnostico: Diagnostico(idPac == $id, $score:score);
-then
-   $diagnostico.setScore($score+50);
-end
-
-rule "Evaluar Cardiopatía Isquémica Por Vómitos/Náuseas/Mareos/Sudoración"
- salience 125
+rule "Score Náuseas/Mareos/Vómitos/"
+ salience 200
 when
     pac: Paciente($id:id);
     sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.NÁUSEAS || tipo == TipoSintoma.VÓMITOS || tipo == TipoSintoma.MAREOS
                                     || tipo == TipoSintoma.SUDORACIÓN);
-   $diagnostico: Diagnostico(idPac == $id, $score:score);
+   $diagnostico: Diagnostico($score:score, idPac == $id);
 then
-   $diagnostico.setScore($score+25);
+    $diagnostico.setScore($score+25); 
 end
 
-rule "Evaluar Cardiopatía Isquémica Por Edad Y Sexo"
- salience 100
+rule "Score Edad Y Sexo Maculino"
+ salience 200
 when
     pac: Paciente($id:id, sexo == Sexo.MASCULINO, edad >= 50);
    $diagnostico: Diagnostico(idPac == $id, $score:score);
@@ -72,8 +40,8 @@ then
    $diagnostico.setScore($score+75);
 end
 
-rule "Evaluar Cardiopatía Isquémica Por Edad Y Sexo II"
- salience 100
+rule "Score Edad Y Sexo Femenino"
+ salience 200
 when
     pac: Paciente($id:id, sexo == Sexo.FEMENINO, edad >= 60);
    $diagnostico: Diagnostico(idPac == $id, $score:score);
@@ -81,8 +49,8 @@ then
    $diagnostico.setScore($score+75);
 end
 
-rule "Evaluar Cardiopatía Isquémica Por Factores De Riesgo"
- salience 90
+rule "Score Factores De Riesgo"
+ salience 200
 when
     pac: Paciente($id:id);
     fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.HIPERTENSION || factorRiesgo== EnumFRiesgo.TABAQUISMO || 
@@ -90,30 +58,50 @@ when
                               factorRiesgo== EnumFRiesgo.OBESIDAD || factorRiesgo== EnumFRiesgo.HISTORIAL_FAMILIAR)
    $diagnostico: Diagnostico(idPac == $id, $score:score);
 then
-   $diagnostico.setScore($score+25);
+   $diagnostico.setScore($score+50);
 end
 
-rule "SÍ Cardiopatía Isquémica Con MUY BAJA Credibilidad"
- salience 80
+rule "Evaluar Cardiopatía Isquémica Con Credibilidad Baja"
+  salience 150
 when
     pac: Paciente($id:id);
-   $diagnostico: Diagnostico(idPac == $id, score== 200);
-   // Tiene que tener problemas respiratorios (+50), dolor torácico (+100) y dolor irradiado a otras zonas (+50)
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_TORÁCICO));
+    exists(Sintoma (idPaciente == $id, tipo ==TipoSintoma.DIFICULTAD_RESPIRAR));
+    exists (Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_PECHO || tipo == TipoSintoma.DOLOR_CUELLO || tipo == TipoSintoma.DOLOR_BRAZO_IZQUIERDO
+                                    || tipo == TipoSintoma.DOLOR_MANDIBULA));
+$diagnostico: Diagnostico(idPac == $id);
 then
-   $diagnostico.setCardiopatia(true);
-   $diagnostico.setCredibilidad(EnumCredibilidad.MUY_BAJA);
+  modify($diagnostico) {
+        setCardiopatia(Boolean.TRUE),
+        setCredibilidad(EnumCredibilidad.BAJA)
+    }
 end
 
-rule "SÍ Cardiopatía Isquémica Con BAJA Credibilidad"
- salience 80
+
+rule "Evaluar Cardiopatía Isquémica Con Credibilidad Alta"
+  salience 100
 when
     pac: Paciente($id:id);
-   $diagnostico: Diagnostico(idPac == $id, score> 200 && score<=300);
-   // Tiene que tener problemas respiratorios (+50), dolor torácico (+100), dolor irradiado a otras zonas (+50) y 
-   // tiene alguno o todos estos síntomas: Vómitos/Náuseas/Mareos/Sudoración (+25 cada síntoma)
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>=200);
+    // 2 factores de riesgo (2*50) + 75 de edad + 1 síntoma malestar (+25)
 then
-   $diagnostico.setCardiopatia(true);
-   $diagnostico.setCredibilidad(EnumCredibilidad.BAJA);
+        $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
 end
 
+rule "Evaluar Cardiopatía Isquémica Con Credibilidad Media"
+  salience 100
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score<200 && score!=0);
+then
+        $diagnostico.setCredibilidad(EnumCredibilidad.MEDIA);
+end
 
+rule "Evaluar No Cardiopatía Isquémica "
+  salience 100
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.FALSE);
+then
+        $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
+end

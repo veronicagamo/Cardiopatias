@@ -53,7 +53,7 @@ public class Diagnostico {
         this.credibilidad = credibilidad;
     }
 
-    public boolean isCardiopatia() {
+    public boolean getCardiopatia() {
         return cardiopatia;
     }
 
