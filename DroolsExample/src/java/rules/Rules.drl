@@ -104,4 +104,5 @@ when
     $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.FALSE);
 then
         $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
+
 end
