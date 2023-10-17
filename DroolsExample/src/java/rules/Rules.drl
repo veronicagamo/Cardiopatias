@@ -105,3 +105,67 @@ when
 then
         $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
 end
+
+rule "Evaluar Infarto Agudo de Miocardio"
+  salience 50
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE);
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DURACIÓN_MAYOR_20));
+    exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS));
+   exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.OCLUSIÓN_COMPLETA || tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
+    exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.CONGESTIÓN_PULMONAR || tipo == EnumPruebas.CARDIOMEGALIA));
+   exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.INFRADESNIVEL_ST || tipo == EnumPruebas.SUPRADESNIVEL_ST));
+   exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.INVERSIÓN_T));
+    exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_TROPONINA));
+  exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_MIOGLOBINA));
+  exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_CK_MB));
+  not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL)));
+   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO)));
+then
+  modify($diagnostico) {
+        setTipo(TipoCardiopatia.INFARTO_MIOCARDIO),
+        setGravedad(Gravedad.ELEVADA)
+    }
+end
+
+rule "Evaluar Angina Pecho Estable Por Ejercicio Físico"
+  salience 50
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE);
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DURACIÓN_MENOR_20));
+   exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO));
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DESAPARECE_EN_REPOSO));
+   exists(Pruebas (idPaciente == $id,  tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
+   not  (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS)));
+   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_TROPONINA)));
+  not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_MIOGLOBINA)));
+   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_CK_MB)));
+
+then
+  modify($diagnostico) {
+        setTipo(TipoCardiopatia.ANGINA_ESTABLE),
+        setGravedad(Gravedad.LEVE)
+    }
+end
+
+rule "Evaluar Angina Pecho Estable Por Estrés Emocional"
+  salience 50
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE);
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DURACIÓN_MENOR_20));
+   exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESTRÉS));
+   exists(Pruebas (idPaciente == $id,  tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
+   not  (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS)));
+   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_TROPONINA)));
+  not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_MIOGLOBINA)));
+   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_CK_MB)));
+
+then
+  modify($diagnostico) {
+        setTipo(TipoCardiopatia.ANGINA_ESTABLE),
+        setGravedad(Gravedad.LEVE)
+    }
+end

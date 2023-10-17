@@ -15,6 +15,7 @@ public class Diagnostico {
     private EnumCredibilidad credibilidad;
     private boolean cardiopatia;
     private TipoCardiopatia tipo;
+    private Gravedad gravedad;
     
     public Diagnostico(int id, int idPac) {
         this.id = id;
@@ -67,5 +68,12 @@ public class Diagnostico {
 
     public void setTipo(TipoCardiopatia tipo) {
         this.tipo = tipo;
+    }
+     public Gravedad getGravedad() {
+        return gravedad;
+    }
+
+    public void setGravedad(Gravedad gravedad) {
+        this.gravedad = gravedad;
     }
 }
