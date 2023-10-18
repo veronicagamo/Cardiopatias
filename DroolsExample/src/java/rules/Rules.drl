@@ -122,10 +122,12 @@ when
   exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_CK_MB));
   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL)));
    not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO)));
+   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DESAPARECE_EN_REPOSO)));
 then
   modify($diagnostico) {
         setTipo(TipoCardiopatia.INFARTO_MIOCARDIO),
-        setGravedad(Gravedad.ELEVADA)
+        setGravedad(Gravedad.ELEVADA),
+         setComentario("Potencialmente mortal y grave. Requiere atención inmediata")
     }
 end
 
@@ -146,7 +148,8 @@ when
 then
   modify($diagnostico) {
         setTipo(TipoCardiopatia.ANGINA_ESTABLE),
-        setGravedad(Gravedad.LEVE)
+        setGravedad(Gravedad.LEVE),
+        setComentario("Menos grave, requiere atención médica.")
     }
 end
 
@@ -166,6 +169,27 @@ when
 then
   modify($diagnostico) {
         setTipo(TipoCardiopatia.ANGINA_ESTABLE),
-        setGravedad(Gravedad.LEVE)
+        setGravedad(Gravedad.LEVE),
+        setComentario("Menos grave, requiere atención médica.")
+    }
+end
+
+rule "Evaluar Angina Pecho Inestable"
+  salience 50
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE);
+    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DURACIÓN_20));
+   exists(Pruebas (idPaciente == $id,  tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
+   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS)));
+   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL)));
+   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO)));
+   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DESAPARECE_EN_REPOSO)));
+
+then
+  modify($diagnostico) {
+        setTipo(TipoCardiopatia.ANGINA_INESTABLE),
+        setGravedad(Gravedad.MODERADA),
+        setComentario("Si no se trata  puede llegar a infarto")
     }
 end

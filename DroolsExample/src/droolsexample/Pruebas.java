@@ -12,6 +12,7 @@ public class Pruebas {
      private int id;
     private int idPaciente;
     private EnumPruebas tipo;
+    
       public Pruebas(int id, int idPaciente, EnumPruebas tipo) {
         this.id = id;
         this.idPaciente = idPaciente;

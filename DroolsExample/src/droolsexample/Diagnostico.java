@@ -16,10 +16,22 @@ public class Diagnostico {
     private boolean cardiopatia;
     private TipoCardiopatia tipo;
     private Gravedad gravedad;
+    private String comentario;
     
     public Diagnostico(int id, int idPac) {
         this.id = id;
         this.idPac = idPac;
+    }
+    
+    public Diagnostico(int id, int idPac, int score, EnumCredibilidad credibilidad, boolean cardiopatia, TipoCardiopatia tipo, Gravedad gravedad, String comentario) {
+        this.id = id;
+        this.idPac = idPac;
+        this.score = score;
+        this.credibilidad = credibilidad;
+        this.cardiopatia = cardiopatia;
+        this.tipo = tipo;
+        this.gravedad = gravedad;
+        this.comentario = comentario;
     }
     
       public int getId() {
@@ -75,5 +87,24 @@ public class Diagnostico {
 
     public void setGravedad(Gravedad gravedad) {
         this.gravedad = gravedad;
+    }
+    public String getComentario() {
+        return comentario;
+    }
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+    @Override
+    public String toString() {
+        return "Diagnostico{" +
+                "id=" + id +
+                ", idPac=" + idPac +
+                ", score=" + score +
+                ", credibilidad=" + credibilidad +
+                ", cardiopatia=" + cardiopatia +
+                ", tipo=" + tipo +
+                ", gravedad=" + gravedad +
+                ", comentario='" + comentario + '\'' +
+                '}';
     }
 }
