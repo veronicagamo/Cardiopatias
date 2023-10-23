@@ -20,7 +20,7 @@
 
 import droolsexample.*
 
-rule "Score Náuseas/Mareos/Vómitos/"
+rule "Score Náuseas/Mareos/Vómitos/Sudoración fría"
  salience 200
 when
     pac: Paciente($id:id);

@@ -75,6 +75,10 @@ public class FactoresRiesgo {
                 ", factorRiesgo=" + factorRiesgo +
                 '}';
     }
+
+    void add(FactoresRiesgo factoresRiesgo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
   
 }

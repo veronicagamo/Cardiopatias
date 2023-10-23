@@ -22,6 +22,11 @@ public class Paciente {
         this.sexo = sexo;
     }
     
+    
+    public Paciente() {
+       super();
+    }
+    
     public int getId(){
     return id;
     }
