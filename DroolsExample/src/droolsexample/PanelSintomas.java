@@ -6,13 +6,17 @@ package droolsexample;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -22,10 +26,17 @@ import javax.swing.JRadioButton;
  */
 public class PanelSintomas extends JFrame implements ActionListener{
     private JPanel panelSintomas;
-    private JRadioButton[] botonesSintomas;
+     private JFrame frame;
+       private  Container contentpane;
+    private boolean accionCompletada;
+    private ArrayList<JCheckBox> sintomaCaja;
     private JButton aceptar;
     private JButton salir;
+    private ArrayList<Sintoma> sintomas;
+    
     public  PanelSintomas(){
+        frame=new JFrame();
+   contentpane = getContentPane();
     panelSintomas = new JPanel(new GridLayout(5, 5));
     String[] nombresSintomas = {
             "Dolor u Opresión Torácica", "Dolor de Cuello", "Dolor de Pecho", "Dolor Brazo Izquierdo", "Dolor de Mandíbula",
@@ -33,11 +44,13 @@ public class PanelSintomas extends JFrame implements ActionListener{
            "Duración Dolor Aprox. 20 mins", "Dificultad de Respirar", "Aparición por Estrés", "Aparición por Esfuerzo Físico", 
            "Desaparece en reposo", "Efecto a Nitroglicerina Sublingual"
         };
-     for(int i=0;i<nombresSintomas.length;i++){
-     botonesSintomas[i].add(new JRadioButton(nombresSintomas[i]));
-     botonesSintomas[i].setPreferredSize(new Dimension(100, 100));
-     panelSintomas.add(botonesSintomas[i]);
-     }
+
+ sintomaCaja = new ArrayList<>();
+        for (String nombre : nombresSintomas) {
+            JCheckBox checkbox = new JCheckBox(nombre);
+            panelSintomas.add(checkbox);
+            sintomaCaja.add(checkbox);
+        }
     aceptar= new JButton ("Aceptar");
     panelSintomas.add(aceptar,BorderLayout.PAGE_END);
      aceptar.setBackground(Color.green);
@@ -46,20 +59,76 @@ public class PanelSintomas extends JFrame implements ActionListener{
       panelSintomas.add(salir,BorderLayout.PAGE_END);
        salir.setBackground(Color.red);
         salir.addActionListener(this);
+        contentpane.add(panelSintomas);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
                    
          Object source = e.getSource();
-          /* if (source==aceptar){
-             if(botonesSintomas[0].isSelected()){  
-            sin1=new Sintoma(idPac,idPac,TipoSintoma.DOLOR_TORÁCICO);
-             System.out.println(sin1);
-             ksession.insert(sin1);
-             }
-             if(botonesSintomas[1].isSelected()){
-             Sintoma sin2=new Sintoma(idPac,idPac,TipoSintoma.DOLOR_CUELLO);
-             ksession.insert(sin2);*/
+         sintomas=new ArrayList<>();
+         if (source == aceptar) {
+            for (JCheckBox checkbox : sintomaCaja) {
+                if (checkbox.isSelected()) {
+                    String nombreSintoma = checkbox.getText();
+                    Sintoma sintoma = sintomaSegunCaja(nombreSintoma);
+                    if (sintoma != null) {
+                        sintomas.add(sintoma);
+                    }
+                }
+            }
+            accionCompletada = true;
+        } else if (source == salir) {
+            System.exit(0);
+        }
+           
+    }
+    
+   public ArrayList<Sintoma> getSintomas(){
+   return this.sintomas;
+   }
+   
+    public boolean isAccionCompletada() {
+        return accionCompletada;
+    }
+    
+      private Sintoma sintomaSegunCaja(String nombre) {
+          switch (nombre) {
+        case "Dolor u Opresión Torácica":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DOLOR_TORÁCICO);
+        case "Dolor de Cuello":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DOLOR_CUELLO);
+        case "Dolor de Pecho":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DOLOR_PECHO);
+        case "Dolor Brazo Izquierdo":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DOLOR_BRAZO_IZQUIERDO);
+        case "Dolor de Mandíbula":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DOLOR_MANDIBULA);
+        case "Náuseas":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.NÁUSEAS);
+        case "Vómitos":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.VÓMITOS);
+        case "Mareos":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.MAREOS);
+        case "Sudoración fría":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.SUDORACIÓN);
+        case "Duración Dolor > 20 mins":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DURACIÓN_MAYOR_20);
+        case "Duración Dolor < 20 mins":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DURACIÓN_MENOR_20);
+        case "Duración Dolor Aprox. 20 mins":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DURACIÓN_20);
+        case "Dificultad de Respirar":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DIFICULTAD_RESPIRAR); 
+        case "Aparición por Estrés":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.APARICIÓN_ESTRÉS);
+        case "Aparición por Esfuerzo Físico":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO); 
+        case "Desaparece en reposo":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.DESAPARECE_EN_REPOSO);
+        case "Efecto a Nitroglicerina Sublingual":
+            return new Sintoma(UUID.randomUUID(),TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL);
+    }
+        return null;
     }
 }

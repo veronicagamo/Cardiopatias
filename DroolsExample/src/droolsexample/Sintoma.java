@@ -4,28 +4,38 @@
  */
 package droolsexample;
 
+import java.util.Objects;
+import java.util.UUID;
+
 /**
  *
  * @author Usuario
  */
 
 public class Sintoma {
-    private int id;
+    private UUID id;
     private int idPaciente;
     private TipoSintoma tipo;
     
-       public Sintoma(int id, int id_paciente, TipoSintoma tipo) {
+       public Sintoma(UUID id, int id_paciente, TipoSintoma tipo) {
         this.id = id;
         this.idPaciente = id_paciente;
         this.tipo = tipo;
     }
+       
+         public Sintoma(UUID id, TipoSintoma tipo) {
+        this.id = id;
+        this.tipo = tipo;
+    }
+ public Sintoma( TipoSintoma tipo) {
+        this.tipo = tipo;
+    }
 
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -47,13 +57,6 @@ public class Sintoma {
     }
 
     
-  @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + this.id;
-        return hash;
-    }
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -71,8 +74,17 @@ public class Sintoma {
         }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
     @Override
     public String toString() {
         return "Sintoma [id=" + id + ", id_paciente=" + idPaciente + ", tipo=" + tipo + "]";
     }
+    
+    
 }

@@ -4,12 +4,14 @@
  */
 package droolsexample;
 
+import java.util.UUID;
+
 /**
  *
  * @author Usuario
  */
 public class Diagnostico {
-    private int id;
+    private UUID id;
     private int idPac;
     private int score;
     private EnumCredibilidad credibilidad;
@@ -18,12 +20,12 @@ public class Diagnostico {
     private Gravedad gravedad;
     private String comentario;
     
-    public Diagnostico(int id, int idPac) {
+    public Diagnostico(UUID id, int idPac) {
         this.id = id;
         this.idPac = idPac;
     }
     
-    public Diagnostico(int id, int idPac, int score, EnumCredibilidad credibilidad, boolean cardiopatia, TipoCardiopatia tipo, Gravedad gravedad, String comentario) {
+    public Diagnostico(UUID id, int idPac, int score, EnumCredibilidad credibilidad, boolean cardiopatia, TipoCardiopatia tipo, Gravedad gravedad, String comentario) {
         this.id = id;
         this.idPac = idPac;
         this.score = score;
@@ -34,11 +36,11 @@ public class Diagnostico {
         this.comentario = comentario;
     }
     
-      public int getId() {
+      public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

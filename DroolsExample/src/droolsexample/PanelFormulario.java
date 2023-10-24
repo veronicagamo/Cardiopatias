@@ -13,6 +13,8 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +26,7 @@ import javax.swing.SwingConstants;
 public class PanelFormulario extends JFrame implements ActionListener {
     private JFrame frame;
        private  Container contentpane;
+     private boolean accionCompletada;
     private JPanel panelFormulario;
      private JPanel panelAtributos;
      private JTextField texto1 ;
@@ -39,8 +42,8 @@ public class PanelFormulario extends JFrame implements ActionListener {
       private JRadioButton radio4;
       private JRadioButton radio5;
       private JRadioButton radio6;
-      private Paciente pac;
-      private ArrayList <FactoresRiesgo> factores;
+      Paciente pac;
+     ArrayList <FactoresRiesgo> factores;
       
 public  PanelFormulario(){
     frame=new JFrame();
@@ -123,20 +126,27 @@ public  PanelFormulario(){
        pac=new Paciente(idPac,nombrePac,edadPac,sexoPac);
        factores=new ArrayList <>();
         if (radio1.isSelected()){
-           factores.add(new FactoresRiesgo(idPac,idPac,EnumFRiesgo.HISTORIAL_FAMILIAR));}
+             UUID uuid = UUID.randomUUID();
+           factores.add(new FactoresRiesgo(uuid,idPac,EnumFRiesgo.HISTORIAL_FAMILIAR));}
           if (radio2.isSelected()){
-           factores.add(new FactoresRiesgo(idPac,idPac,EnumFRiesgo.TABAQUISMO));
+              UUID uuid = UUID.randomUUID();
+           factores.add(new FactoresRiesgo(uuid,idPac,EnumFRiesgo.TABAQUISMO));
          } 
                   if (radio3.isSelected()){
-           factores.add( new FactoresRiesgo(idPac,idPac,EnumFRiesgo.DIABETES));} 
+                      UUID uuid = UUID.randomUUID();
+           factores.add( new FactoresRiesgo(uuid,idPac,EnumFRiesgo.DIABETES));} 
                   if (radio4.isSelected()){
-          factores.add(new FactoresRiesgo(idPac,idPac,EnumFRiesgo.COLESTEROL_ELEVADO));} 
+                      UUID uuid = UUID.randomUUID();
+          factores.add(new FactoresRiesgo(uuid,idPac,EnumFRiesgo.COLESTEROL_ELEVADO));} 
                    if (radio5.isSelected()){
-           factores.add(new FactoresRiesgo(idPac,idPac,EnumFRiesgo.OBESIDAD));} 
+                       UUID uuid = UUID.randomUUID();
+           factores.add(new FactoresRiesgo(uuid,idPac,EnumFRiesgo.OBESIDAD));} 
                    if  (radio6.isSelected()){
-                      factores.add(new FactoresRiesgo(idPac,idPac,EnumFRiesgo.HIPERTENSION));
+                       UUID uuid = UUID.randomUUID();
+                      factores.add(new FactoresRiesgo(uuid,idPac,EnumFRiesgo.HIPERTENSION));
                    }
-        }
+                    accionCompletada = true;
+                        }
         else System.exit(0);
     }
     
@@ -146,5 +156,8 @@ public  PanelFormulario(){
     
     public ArrayList <FactoresRiesgo> getFactores(){
      return this.factores;
+    }
+     public boolean isAccionCompletada() {
+        return accionCompletada;
     }
 }

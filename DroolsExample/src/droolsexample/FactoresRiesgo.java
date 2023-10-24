@@ -4,27 +4,30 @@
  */
 package droolsexample;
 
+import java.util.Objects;
+import java.util.UUID;
+
 /**
  *
  * @author Usuario
  */
 
 public class FactoresRiesgo {
-    private int id;
+    private UUID id;
     private int idPacient; 
     private EnumFRiesgo factorRiesgo;
 
-    public FactoresRiesgo(int id, int idPacient, EnumFRiesgo factorRiesgo) {
+    public FactoresRiesgo(UUID id, int idPacient, EnumFRiesgo factorRiesgo) {
         this.id = id;
         this.idPacient = idPacient;
         this.factorRiesgo = factorRiesgo;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -43,12 +46,7 @@ public class FactoresRiesgo {
     public void setFactorRiesgo(EnumFRiesgo factorRiesgo) {
         this.factorRiesgo = factorRiesgo;
     }
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + this.id;
-        return hash;
-    }
+ 
     
     @Override
     public boolean equals(Object obj) {
@@ -67,6 +65,13 @@ public class FactoresRiesgo {
         }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
   @Override
     public String toString() {
         return "FactoresRiesgo{" +
@@ -76,9 +81,6 @@ public class FactoresRiesgo {
                 '}';
     }
 
-    void add(FactoresRiesgo factoresRiesgo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
   
 }
