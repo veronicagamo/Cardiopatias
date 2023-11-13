@@ -98,15 +98,20 @@ public class Diagnostico {
     }
     @Override
     public String toString() {
-        return "Diagnostico{" +
-                "id=" + id +
-                ", idPac=" + idPac +
-                ", score=" + score +
-                ", credibilidad=" + credibilidad +
-                ", cardiopatia=" + cardiopatia +
-                ", tipo=" + tipo +
-                ", gravedad=" + gravedad +
-                ", comentario='" + comentario + '\'' +
-                '}';
+             StringBuilder sb = new StringBuilder();
+    sb.append("\n\n");
+    sb.append("   ID DEL DIAGNÓSTICO: ").append(id).append("\n\n");
+    sb.append("   ID DEL PACIENTE: ").append(idPac).append("\n\n");
+    sb.append("   ¿PRESENTA ALGUNA CARDIOPATÍA ISQUÉMICA?: ").append(cardiopatia ? "Sí" : "No").append("\n\n");
+    if (cardiopatia) {
+        sb.append("   TIPO DE CARDIOPATÍA ISQUÉMICA: ").append(tipo).append("\n\n");
+        sb.append("   GRAVEDAD: ").append(gravedad).append("\n\n");
     }
-}
+    sb.append("   SCORE OBTENIDO: ").append(score).append("\n\n");
+    sb.append("   CREDIBILIDAD DEL DIAGNÓSTICO: ").append(credibilidad).append("\n\n");
+    sb.append("   SUGERENCIAS Y RECOMENDACIONES: ").append(comentario).append("\n\n");
+        
+        return sb.toString();
+    }
+    }
+

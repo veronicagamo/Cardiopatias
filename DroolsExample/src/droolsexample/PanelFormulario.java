@@ -9,12 +9,17 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,8 +47,8 @@ public class PanelFormulario extends JFrame implements ActionListener {
       private JRadioButton radio4;
       private JRadioButton radio5;
       private JRadioButton radio6;
-      Paciente pac;
-     ArrayList <FactoresRiesgo> factores;
+      private Paciente pac;
+     private ArrayList <FactoresRiesgo> factores;
       
 public  PanelFormulario(){
     frame=new JFrame();
@@ -108,6 +113,7 @@ public  PanelFormulario(){
        panelAtributos.add(aceptar);
          panelFormulario.add(panelAtributos);
          contentpane.add(panelFormulario);
+ 
          
     } 
    

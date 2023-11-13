@@ -7,7 +7,6 @@ package droolsexample;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +17,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 
 /**
  *
@@ -37,7 +35,7 @@ public class PanelSintomas extends JFrame implements ActionListener{
     public  PanelSintomas(){
         frame=new JFrame();
    contentpane = getContentPane();
-    panelSintomas = new JPanel(new GridLayout(5, 5));
+    panelSintomas = new JPanel(new GridLayout(10, 2));
     String[] nombresSintomas = {
             "Dolor u Opresión Torácica", "Dolor de Cuello", "Dolor de Pecho", "Dolor Brazo Izquierdo", "Dolor de Mandíbula",
              "Náuseas", "Vómitos", "Mareos", "Sudoración fría","Duración Dolor > 20 mins","Duración Dolor < 20 mins",
@@ -51,6 +49,7 @@ public class PanelSintomas extends JFrame implements ActionListener{
             panelSintomas.add(checkbox);
             sintomaCaja.add(checkbox);
         }
+        panelSintomas.add(new JLabel(""));
     aceptar= new JButton ("Aceptar");
     panelSintomas.add(aceptar,BorderLayout.PAGE_END);
      aceptar.setBackground(Color.green);

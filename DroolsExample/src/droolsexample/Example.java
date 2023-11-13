@@ -57,11 +57,30 @@ Paciente paciente =panelFormulario.getPaciente();
       sintoma.setIdPaciente(paciente.getId());
       ksession.insert(sintoma);
 }
-     
-  
+      PanelPruebas panelPruebass= new PanelPruebas();
+       panelPruebass.setTitle("Seleccionar Síntomas Procedentes de Pruebas Complementarias");
+       panelPruebass.setSize(800, 800);
+       panelPruebass.setVisible(true);
+       
+        while (!panelPruebass.isAccionCompletada()) {
+                try {
+                    Thread.sleep(100); 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+  ArrayList <Pruebas> pruebas=panelPruebass.getPruebas();
+   for (Pruebas prueba : pruebas) {
+      prueba.setIdPaciente(paciente.getId());
+      ksession.insert(prueba);
+}
      ksession.fireAllRules();
-     System.out.println(diagnostico);
         ksession.dispose();
+        PanelDiagnostico panelDiag= new PanelDiagnostico();
+        panelDiag.setTitle("Diagnóstico Final");
+       panelDiag.setSize(800, 800);
+       panelDiag.setVisible(true);
+       panelDiag.setDiagnostico(diagnostico);
     }
       
    }

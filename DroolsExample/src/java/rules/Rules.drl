@@ -20,15 +20,114 @@
 
 import droolsexample.*
 
-rule "Score Náuseas/Mareos/Vómitos/Sudoración fría"
+rule "Score Náuseas"
  salience 200
 when
     pac: Paciente($id:id);
-    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.NÁUSEAS || tipo == TipoSintoma.VÓMITOS || tipo == TipoSintoma.MAREOS
-                                    || tipo == TipoSintoma.SUDORACIÓN);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.NÁUSEAS);
    $diagnostico: Diagnostico($score:score, idPac == $id);
 then
     $diagnostico.setScore($score+25); 
+end
+
+rule "Score Mareos"
+ salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id,  tipo == TipoSintoma.MAREOS);
+   $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+25); 
+end
+
+rule "Score Vómitos"
+ salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id,  tipo == TipoSintoma.VÓMITOS);
+   $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+25); 
+end
+
+rule "Score Sudoración fría"
+ salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id,tipo == TipoSintoma.SUDORACIÓN);
+   $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+25); 
+end
+
+rule "Score Dolor Torácico"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_TORÁCICO);
+    $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Dificultad Respirar"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo ==TipoSintoma.DIFICULTAD_RESPIRAR);
+    $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Dolor Pecho"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_PECHO);
+ $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Dolor Cuello"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_CUELLO);
+ $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Dolor Brazo Izquierdo"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.DOLOR_BRAZO_IZQUIERDO);
+ $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Dolor Mandíbula"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id,tipo == TipoSintoma.DOLOR_MANDIBULA);
+ $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
+end
+
+rule "Score Nitroglicerina"
+  salience 200
+when
+    pac: Paciente($id:id);
+    sin: Sintoma (idPaciente == $id, tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL);
+ $diagnostico: Diagnostico($score:score, idPac == $id);
+then
+    $diagnostico.setScore($score+75); 
 end
 
 rule "Score Edad Y Sexo Maculino"
@@ -49,16 +148,174 @@ then
    $diagnostico.setScore($score+75);
 end
 
-rule "Score Factores De Riesgo"
+rule "Score Factores De Riesgo: Hipertensión"
  salience 200
 when
     pac: Paciente($id:id);
-    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.HIPERTENSION || factorRiesgo== EnumFRiesgo.TABAQUISMO || 
-                              factorRiesgo== EnumFRiesgo.DIABETES || factorRiesgo== EnumFRiesgo.COLESTEROL_ELEVADO ||
-                              factorRiesgo== EnumFRiesgo.OBESIDAD || factorRiesgo== EnumFRiesgo.HISTORIAL_FAMILIAR)
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.HIPERTENSION);
    $diagnostico: Diagnostico(idPac == $id, $score:score);
 then
    $diagnostico.setScore($score+50);
+end
+
+rule "Score Factores De Riesgo: Tabaquismo"
+ salience 200
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.TABAQUISMO);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Score Factores De Riesgo: Diabetes"
+ salience 200
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.DIABETES);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Score Factores De Riesgo: Colesterol"
+ salience 200
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id,factorRiesgo== EnumFRiesgo.COLESTEROL_ELEVADO);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Score Factores De Riesgo: Obesidad"
+ salience 200
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.OBESIDAD);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Score Factores De Riesgo: Historial Familiar"
+ salience 200
+when
+    pac: Paciente($id:id);
+    fRiesgo: FactoresRiesgo (idPacient == $id, factorRiesgo== EnumFRiesgo.HISTORIAL_FAMILIAR);
+   $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+50);
+end
+
+rule "Score Pruebas Complementarias: Necrosis"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Oclusión Completa"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.OCLUSIÓN_COMPLETA);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Oclusión Parcial"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.OCLUSIÓN_PARCIAL);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Congestión Pulmonar"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.CONGESTIÓN_PULMONAR);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Cardiomegalia"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.CARDIOMEGALIA);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Infradesnivel ST"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.INFRADESNIVEL_ST);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Supradesnivel ST"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.SUPRADESNIVEL_ST);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Inversión T"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.INVERSIÓN_T);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Troponina"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_TROPONINA);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: Mioglobina"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id, tipo == EnumPruebas.ELEVADA_MIOGLOBINA);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
+end
+
+rule "Score Pruebas Complementarias: CK_MB"
+  salience 200
+when
+    pac: Paciente($id:id);
+    prueba: Pruebas (idPaciente == $id,tipo == EnumPruebas.ELEVADA_CK_MB);
+ $diagnostico: Diagnostico(idPac == $id, $score:score);
+then
+   $diagnostico.setScore($score+150);
 end
 
 rule "Evaluar Cardiopatía Isquémica Con Credibilidad Baja"
@@ -82,8 +339,7 @@ rule "Evaluar Cardiopatía Isquémica Con Credibilidad Alta"
   salience 100
 when
     pac: Paciente($id:id);
-    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>=200);
-    // 2 factores de riesgo (2*50) + 75 de edad + 1 síntoma malestar (+25)
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>=700);
 then
         $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
 end
@@ -92,7 +348,7 @@ rule "Evaluar Cardiopatía Isquémica Con Credibilidad Media"
   salience 100
 when
     pac: Paciente($id:id);
-    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score<200 && score!=0);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>225 && score<700);
 then
         $diagnostico.setCredibilidad(EnumCredibilidad.MEDIA);
 end
@@ -104,6 +360,7 @@ when
     $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.FALSE);
 then
         $diagnostico.setCredibilidad(EnumCredibilidad.ALTA);
+         $diagnostico.setComentario("Mantener una dieta equilibrada. Evitar el sedentarismo, el tabaquismo y el alcohol.");
 end
 
 rule "Evaluar Infarto Agudo de Miocardio"
@@ -191,5 +448,18 @@ then
         setTipo(TipoCardiopatia.ANGINA_INESTABLE),
         setGravedad(Gravedad.MODERADA),
         setComentario("Si no se trata  puede llegar a infarto")
+    }
+end
+
+rule "Evaluar Cardiopatía Isquémica No Concluyente"
+  salience 25
+when
+    pac: Paciente($id:id);
+    $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, tipo==null);
+
+then
+  modify($diagnostico) {
+        setGravedad(Gravedad.LEVE),
+        setComentario("Los síntomas y las pruebas no son concluyentes para diagnosticar el tipo de cardiopatía isquémica")
     }
 end

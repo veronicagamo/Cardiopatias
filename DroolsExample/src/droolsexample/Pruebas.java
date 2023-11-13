@@ -4,28 +4,35 @@
  */
 package droolsexample;
 
+import java.util.UUID;
+
 /**
  *
  * @author Usuario
  */
 public class Pruebas {
-     private int id;
+     private UUID id;
     private int idPaciente;
     private EnumPruebas tipo;
     
-      public Pruebas(int id, int idPaciente, EnumPruebas tipo) {
+      public Pruebas(UUID id, int idPaciente, EnumPruebas tipo) {
         this.id = id;
         this.idPaciente = idPaciente;
         this.tipo = tipo;
     }
+      
+      public Pruebas(UUID id, EnumPruebas tipo) {
+        this.id = id;
+        this.tipo = tipo;
+    }
 
     
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
