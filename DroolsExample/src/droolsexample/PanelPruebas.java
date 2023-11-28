@@ -6,6 +6,9 @@ package droolsexample;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +35,7 @@ public class PanelPruebas extends JFrame implements ActionListener {
      private ArrayList<JCheckBox> pruebasCaja;
      private JButton aceptar;
     private JButton salir;
+     private JPanel pane;
      
      public  PanelPruebas(){
     frame=new JFrame();
@@ -51,22 +55,27 @@ String[] pruebas = {
     "Supradesnivel Segmento ST", 
     "Inversión Onda T"
 };
+ Font fontRadioButton = new Font("Arial", Font.PLAIN, 22);
      pruebasCaja = new ArrayList<>();
         for (String prueba : pruebas) {
             JCheckBox boton = new JCheckBox(prueba);
+            boton.setFont(fontRadioButton);
             pruebasCaja.add(boton);
             panel.add(boton);
         }
-         panel.add(new JLabel(""));
+            GridBagConstraints c = new GridBagConstraints();
+            pane = new JPanel(new GridBagLayout());
+       c.fill = GridBagConstraints.HORIZONTAL;  
+       c.anchor = GridBagConstraints.PAGE_END; 
        salir= new JButton ("Exit");
-       salir.setBackground(Color.red);
         salir.addActionListener(this);
-       panel.add(salir);
+       pane.add(salir);
        aceptar= new JButton ("Obtener Diagnóstico");
-       aceptar.setBackground(Color.green);
         aceptar.addActionListener(this);
-       panel.add(aceptar);
+        pane.add(aceptar);
+       panel.add(pane,c);
          contentpane.add(panel);
+         
          
     } 
              

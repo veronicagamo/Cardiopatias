@@ -436,19 +436,23 @@ rule "Evaluar Angina Pecho Inestable"
 when
     pac: Paciente($id:id);
     $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE);
-    exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DURACIÓN_20));
-   exists(Pruebas (idPaciente == $id,  tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
-   not (exists(Pruebas (idPaciente == $id, tipo == EnumPruebas.NECROSIS)));
-   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL)));
-   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO)));
-   not (exists(Sintoma (idPaciente == $id, tipo == TipoSintoma.DESAPARECE_EN_REPOSO)));
-
+    exists(Sintoma (idPaciente == $id, 
+        tipo == TipoSintoma.DURACIÓN_20));
+    exists(Pruebas (idPaciente == $id,  
+        tipo == EnumPruebas.OCLUSIÓN_PARCIAL));
+    not (exists(Pruebas (idPaciente == $id, 
+        tipo == EnumPruebas.NECROSIS)));
+    not (exists(Sintoma (idPaciente == $id, 
+        tipo == TipoSintoma.EFECTO_A_NITOGLICERINA_SUBLINGUAL)));
+    not (exists(Sintoma (idPaciente == $id, 
+        tipo == TipoSintoma.APARICIÓN_ESFUERZO_FÍSICO)));
+    not (exists(Sintoma (idPaciente == $id, 
+        tipo == TipoSintoma.DESAPARECE_EN_REPOSO)));
 then
   modify($diagnostico) {
         setTipo(TipoCardiopatia.ANGINA_INESTABLE),
         setGravedad(Gravedad.MODERADA),
-        setComentario("Si no se trata  puede llegar a infarto")
-    }
+        setComentario("Si no se trata  puede llegar a infarto")}
 end
 
 rule "Evaluar Cardiopatía Isquémica No Concluyente"
@@ -459,6 +463,7 @@ when
 
 then
   modify($diagnostico) {
+        setTipo(TipoCardiopatia.NO_CONCLUYENTE),
         setGravedad(Gravedad.LEVE),
         setComentario("Los síntomas y las pruebas no son concluyentes para diagnosticar el tipo de cardiopatía isquémica")
     }

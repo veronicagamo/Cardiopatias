@@ -112,6 +112,5 @@ public class Diagnostico {
     sb.append("   SUGERENCIAS Y RECOMENDACIONES: ").append(comentario).append("\n\n");
         
         return sb.toString();
-    }
-    }
+    }}
 

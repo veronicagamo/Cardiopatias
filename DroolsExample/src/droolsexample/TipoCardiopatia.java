@@ -9,5 +9,5 @@ package droolsexample;
  * @author Usuario
  */
 public enum TipoCardiopatia {
-    ANGINA_ESTABLE, ANGINA_INESTABLE, INFARTO_MIOCARDIO
+    ANGINA_ESTABLE, ANGINA_INESTABLE, INFARTO_MIOCARDIO, NO_CONCLUYENTE
 }

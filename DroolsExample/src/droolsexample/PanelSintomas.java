@@ -7,6 +7,9 @@ package droolsexample;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +34,7 @@ public class PanelSintomas extends JFrame implements ActionListener{
     private JButton aceptar;
     private JButton salir;
     private ArrayList<Sintoma> sintomas;
+      private JPanel pane;
     
     public  PanelSintomas(){
         frame=new JFrame();
@@ -42,22 +46,25 @@ public class PanelSintomas extends JFrame implements ActionListener{
            "Duración Dolor Aprox. 20 mins", "Dificultad de Respirar", "Aparición por Estrés", "Aparición por Esfuerzo Físico", 
            "Desaparece en reposo", "Efecto a Nitroglicerina Sublingual"
         };
-
+Font fontRadioButton = new Font("Arial", Font.PLAIN, 22);
  sintomaCaja = new ArrayList<>();
         for (String nombre : nombresSintomas) {
             JCheckBox checkbox = new JCheckBox(nombre);
+             checkbox.setFont(fontRadioButton);
             panelSintomas.add(checkbox);
             sintomaCaja.add(checkbox);
         }
-        panelSintomas.add(new JLabel(""));
+         GridBagConstraints c = new GridBagConstraints();
+            pane = new JPanel(new GridBagLayout());
+       c.fill = GridBagConstraints.HORIZONTAL;  
+       c.anchor = GridBagConstraints.PAGE_END; 
     aceptar= new JButton ("Aceptar");
-    panelSintomas.add(aceptar,BorderLayout.PAGE_END);
-     aceptar.setBackground(Color.green);
      aceptar.addActionListener(this);
      salir= new JButton ("Exit");
-      panelSintomas.add(salir,BorderLayout.PAGE_END);
-       salir.setBackground(Color.red);
         salir.addActionListener(this);
+        pane.add(aceptar);
+        pane.add(salir);
+          panelSintomas.add(pane,c);
         contentpane.add(panelSintomas);
     }
 

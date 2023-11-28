@@ -7,9 +7,11 @@ package droolsexample;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +21,12 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -47,71 +51,91 @@ public class PanelFormulario extends JFrame implements ActionListener {
       private JRadioButton radio4;
       private JRadioButton radio5;
       private JRadioButton radio6;
+       private ButtonGroup buttonGroup;
       private Paciente pac;
      private ArrayList <FactoresRiesgo> factores;
+     private JPanel pane;
       
 public  PanelFormulario(){
     frame=new JFrame();
+     frame.setSize(400,400);  
    contentpane = getContentPane();
+          GridBagConstraints c = new GridBagConstraints();
+           c.fill = GridBagConstraints.CENTER;
+            Font fontRadioButton = new Font("Arial", Font.PLAIN, 20);
         panelFormulario= new JPanel(new GridBagLayout());
          panelAtributos = new JPanel(new GridLayout(10,2));
          JLabel tituloPanelFormulario= new JLabel("DATOS PERSONALES");
-         tituloPanelFormulario.setFont(new Font("Serif", Font.BOLD, 30));
+         tituloPanelFormulario.setFont(new Font("Serif", Font.BOLD, 36));
        tituloPanelFormulario.setHorizontalAlignment(SwingConstants.CENTER);
         panelAtributos.add(tituloPanelFormulario);
         panelAtributos.add(new JLabel(""));
-        JLabel labelId = new JLabel(" DNI SIN LETRA:");
-        labelId.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel labelId = new JLabel(" IDENTIFICADOR:");
+        labelId.setFont(new Font("Arial", Font.BOLD, 26));
          panelAtributos.add(labelId);
        texto3 = new JTextField(10);
         panelAtributos.add(texto3);
         JLabel labelNombre = new JLabel(" NOMBRE Y APELLIDOS:");
-        labelNombre.setFont(new Font("Arial", Font.BOLD, 16));
+        labelNombre.setFont(new Font("Arial", Font.BOLD, 26));
          panelAtributos.add(labelNombre);
        texto1 = new JTextField(50);
         panelAtributos.add(texto1);
         JLabel labelEdad = new JLabel(" EDAD:");
-        labelEdad.setFont(new Font("Arial", Font.BOLD, 16));
+        labelEdad.setFont(new Font("Arial", Font.BOLD, 26));
         panelAtributos.add(labelEdad);
         texto2 = new JTextField(3);
         panelAtributos.add(texto2);
         JLabel labelSexo = new JLabel(" SEXO:");
-        labelSexo.setFont(new Font("Arial", Font.BOLD, 16));
+        labelSexo.setFont(new Font("Arial", Font.BOLD, 26));
         panelAtributos.add(labelSexo);
         JPanel panelSexo = new JPanel(new GridLayout(1,2));
+        buttonGroup = new ButtonGroup();
         femBoton=new JRadioButton("Femenino");
+         mascBoton=new JRadioButton("Masculino");
+         femBoton.setFont(fontRadioButton);
+         mascBoton.setFont(fontRadioButton);
+         buttonGroup.add(femBoton);
+        buttonGroup.add(mascBoton);
        panelSexo.add(femBoton);
-       mascBoton=new JRadioButton("Masculino");
         panelSexo.add(mascBoton);
         panelAtributos.add(panelSexo);
         JLabel labelFactores = new JLabel(" FACTORES DE RIESGO:");
-        labelFactores.setFont(new Font("Arial", Font.BOLD, 16));
+        labelFactores.setFont(new Font("Arial", Font.BOLD, 26));
         panelAtributos.add(labelFactores);
-        panelAtributos.add(new JLabel(""));
-        JPanel panelFactoresRiesgo = new JPanel(new GridLayout(1,6));
-        radio1=new JRadioButton("Antecendetes");
+        JPanel panelFactoresRiesgo = new JPanel(new GridLayout(2,6));
+        GridBagConstraints c2 = new GridBagConstraints();
+        c2.fill = GridBagConstraints.HORIZONTAL;  
+        radio1=new JRadioButton("H. Familiar");
+        radio1.setFont(fontRadioButton);
         radio2=new JRadioButton("Tabaquismo");
+        radio2.setFont(fontRadioButton);
         radio3=new JRadioButton("Diabetes");
+        radio3.setFont(fontRadioButton);
         radio4=new JRadioButton("Colesterol Alto");
+        radio4.setFont(fontRadioButton);
         radio5=new JRadioButton("Obesidad");
+        radio5.setFont(fontRadioButton);
         radio6=new JRadioButton("Hipertensión");
+        radio6.setFont(fontRadioButton);
        panelFactoresRiesgo.add(radio1);
        panelFactoresRiesgo.add(radio2);
        panelFactoresRiesgo.add(radio3);
        panelFactoresRiesgo.add(radio4);
        panelFactoresRiesgo.add(radio5);
        panelFactoresRiesgo.add(radio6);
-       panelAtributos.add(panelFactoresRiesgo);
-       panelAtributos.add(new JLabel(""));
+       c2.gridwidth = 2;
+       panelAtributos.add(panelFactoresRiesgo,c2);
+        panelFormulario.add(panelAtributos,c);
+       pane = new JPanel(new GridBagLayout());
+       c.fill = GridBagConstraints.HORIZONTAL;  
+c.anchor = GridBagConstraints.PAGE_END;       
        salir= new JButton ("Exit");
-       salir.setBackground(Color.red);
         salir.addActionListener(this);
-       panelAtributos.add(salir);
-       aceptar= new JButton ("Aceptar");
-       aceptar.setBackground(Color.green);
+      pane.add(salir);
+       aceptar= new JButton ("Aceptar"); 
         aceptar.addActionListener(this);
-       panelAtributos.add(aceptar);
-         panelFormulario.add(panelAtributos);
+       pane.add(aceptar);
+          panelFormulario.add(pane,c);
          contentpane.add(panelFormulario);
  
          
@@ -119,6 +143,7 @@ public  PanelFormulario(){
    
     @Override
     public void actionPerformed(ActionEvent e) {
+        try{
         Object source = e.getSource();
         if(source==aceptar){
          int idPac= Integer.parseInt(texto3.getText());
@@ -153,7 +178,13 @@ public  PanelFormulario(){
                    }
                     accionCompletada = true;
                         }
-        else System.exit(0);
+        else System.exit(0);}
+        catch(Exception ex){
+        JOptionPane.showMessageDialog(frame,
+    "Algún campo está vacío o es erróneo",
+    "Inane error",
+    JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public Paciente getPaciente(){
