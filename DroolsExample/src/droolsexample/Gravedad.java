@@ -10,4 +10,5 @@ package droolsexample;
  */
 public enum Gravedad {
     ELEVADA, MODERADA, LEVE
+    
 }
