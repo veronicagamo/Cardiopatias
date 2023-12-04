@@ -336,7 +336,7 @@ end
 
 
 rule "Evaluar Cardiopatía Isquémica Con Credibilidad Alta"
-  salience 100
+  salience 25
 when
     pac: Paciente($id:id);
     $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>=700);
@@ -345,7 +345,7 @@ then
 end
 
 rule "Evaluar Cardiopatía Isquémica Con Credibilidad Media"
-  salience 100
+  salience 25
 when
     pac: Paciente($id:id);
     $diagnostico: Diagnostico(idPac == $id, cardiopatia==Boolean.TRUE, score>225 && score<700);
